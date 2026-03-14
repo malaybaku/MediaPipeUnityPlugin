@@ -38,9 +38,9 @@ http_archive(
         "@//third_party:mediapipe_extension.diff",
         "@//third_party:mediapipe_workaround.diff",
     ],
-    sha256 = "ae0abfc544a37a46f46e20f73010ddbe43cf12b0853701b763d3df1ab986dd36",
-    strip_prefix = "mediapipe-0.10.20",
-    urls = ["https://github.com/google/mediapipe/archive/v0.10.20.tar.gz"],
+    sha256 = "25af3c4cc44dfe929eea226ab6cd0dd53a54fbb199db877cc96aa63d0e45d745",
+    strip_prefix = "mediapipe-0.10.22",
+    urls = ["https://github.com/google/mediapipe/archive/v0.10.22.tar.gz"],
 )
 
 # ABSL on 2023-10-18
@@ -57,13 +57,22 @@ http_archive(
     urls = ["https://github.com/abseil/abseil-cpp/archive//9687a8ea750bfcddf790372093245a1d041b21a3.tar.gz"],
 )
 
+http_archive(
+    name = "rules_android_ndk",
+    sha256 = "d230a980e0d3a42b85d5fce2cb17ec3ac52b88d2cff5aaf86bae0f05b48adc55",
+    strip_prefix = "rules_android_ndk-d5c9d46a471e8fcd80e7ec5521b78bb2df48f4e0",
+    url = "https://github.com/bazelbuild/rules_android_ndk/archive/d5c9d46a471e8fcd80e7ec5521b78bb2df48f4e0.zip",
+)
+
+load("@rules_android_ndk//:rules.bzl", "android_ndk_repository")
+
 load("//third_party:android_configure.bzl", "android_configure")
 
 android_configure(name = "local_config_android")
 
 load("@local_config_android//:android_configure.bzl", "android_workspace")
 
-android_workspace()
+android_workspace(android_ndk_repository)
 
 http_archive(
     name = "build_bazel_rules_apple",
@@ -111,7 +120,7 @@ http_archive(
         "-p1",
     ],
     patches = [
-        "@mediapipe//third_party:zlib.diff",
+        "@//third_party:zlib.patch",
     ],
     sha256 = "b3a24de97a8fdbc835b9833169501030b8977031bcb54b3b3ac13740f846ab30",
     strip_prefix = "zlib-1.2.13",
@@ -197,7 +206,7 @@ http_archive(
     sha256 = "ad37707084a6d4ff41be10cbe8540c75bea057ba79d0de6c367c1bfac6ba0852",
     strip_prefix = "kleidiai-40a926833857fb64786e02f97703e42b1537cb57",
     urls = [
-        "https://gitlab.arm.com/kleidi/kleidiai/-/archive/40a926833857fb64786e02f97703e42b1537cb57/kleidiai-40a926833857fb64786e02f97703e42b1537cb57.zip"
+        "https://gitlab.arm.com/kleidi/kleidiai/-/archive/40a926833857fb64786e02f97703e42b1537cb57/kleidiai-40a926833857fb64786e02f97703e42b1537cb57.zip",
     ],
 )
 
@@ -375,9 +384,9 @@ http_archive(
     # TODO: Fix this in AudioTools directly
     patches = ["@mediapipe//third_party:com_google_audio_tools_fixes.diff"],
     repo_mapping = {"@com_github_glog_glog": "@com_github_glog_glog_no_gflags"},
-    sha256 = "fe346e1aee4f5069c4cbccb88706a9a2b2b4cf98aeb91ec1319be77e07dd7435",
-    strip_prefix = "multichannel-audio-tools-1f6b1319f13282eda6ff1317be13de67f4723860",
-    urls = ["https://github.com/google/multichannel-audio-tools/archive/1f6b1319f13282eda6ff1317be13de67f4723860.zip"],
+    sha256 = "7d7227cc6bb1f8917a9c9013e8f3578ec681c49e20fe2fc38ba90965394de60c",
+    strip_prefix = "multichannel-audio-tools-bbf15de4b7cd825d650296d21917afc07e8fe18b",
+    urls = ["https://github.com/google/multichannel-audio-tools/archive/bbf15de4b7cd825d650296d21917afc07e8fe18b.tar.gz"],
 )
 
 http_archive(
@@ -516,7 +525,7 @@ http_archive(
     build_file = "@mediapipe//third_party:opencv_android.BUILD",
     strip_prefix = "OpenCV-android-sdk",
     type = "zip",
-    url = "https://github.com/opencv/opencv/releases/download/4.10.0/opencv-4.10.0-android-sdk.zip",
+    url = "https://github.com/opencv/opencv/releases/download/4.12.0/opencv-4.12.0-android-sdk.zip",
 )
 
 # After OpenCV 3.2.0, the pre-compiled opencv2.framework has google protobuf symbols, which will
